@@ -32,6 +32,8 @@ sumArray(arr: number[]): number
 
 Javascript の一般的なテストフレームワークは Jest?
 
+※[サバイバル TypeScript に Jest の例があった](https://typescriptbook.jp/tutorials/jest)
+
 **【メリット】**
 
 1.  バグの早期発見
