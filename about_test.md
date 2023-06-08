@@ -28,3 +28,22 @@ Jest との関係性については、Jest は JavaScript、TypeScript におけ
 [Vitest を使って Unit Testing にチャレンジ(Vue, React, Svelte).](https://reffect.co.jp/html/vitest.)
 
 [あたらしいテストフレームワーク Vitest を React で試してみた ....](https://dev.classmethod.jp/articles/intro-vitest/.)
+
+**【使用例】**
+
+```ts: vitestテストコードの例
+import { mount } from '@vue/test-utils'
+import MenusCarousel from '@/components/carousel/MenusCarousel.vue'
+import { assert, test } from 'vitest'
+
+// Note: No describe method in Vitest
+test('MenusCarousel.vue', async () => {
+  const wrapper = mount(MenusCarousel)
+
+  // Get the exposed function.
+  const { toYen } = wrapper.vm
+
+  // Test the toYen function.
+  assert.strictEqual(toYen(1234567890), '1,234,567,890')
+})
+```
