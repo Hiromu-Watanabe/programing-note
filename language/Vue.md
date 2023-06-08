@@ -5,6 +5,8 @@
 現在時点（2023/6/7）のプロジェクトでは vue3 の CompositionAPI を使用しているため、
 vue3 の CompositionAPI に沿った内容について書いていく
 
+[公式サイト](https://vuejs.org/)
+
 <br />
 <br />
 
@@ -146,3 +148,53 @@ watchEffect(async () => {
 <br />
 
 ---
+
+## **<font color="#00ff00">v-on</font>**
+
+`v-on` ディレクティブを使用することで、 DOM イベントの購読やイベント発火時にいくつかの JavaScript を実行します。これは通常 @ に省略することができます。
+
+使い方は `v-on:click="handler"`、あるいは省略して `@click="handler"` として使用します。
+
+ハンドラーの値は以下のいずれかを指定します:
+
+1. 【インラインハンドラー】
+
+   イベント発火時に実行されるインライン JavaScript 式 (これはネイディブの `onclick` 属性に似たものです)
+
+   ```vue:インラインハンドラー例
+   <template>
+     <button @click="count++">Add 1</button>
+     <p>Count is: {{ count }}</p>
+   </template>
+
+   <script setup lang="ts">
+     import { ref } from 'vue'
+
+     const count = ref(0)
+   </script>
+   ```
+
+2. 【メソッドハンドラー】
+
+   コンポーネント上で定義されたメソッドを示すプロパティ名またはパス
+
+   ```vue:インラインハンドラー例
+   <template>
+    <!-- `greet` はscriptタグ内で定義したメソッド名です。 -->
+    <button @click="greet">Greet</button>
+   </template>
+
+   <script setup lang="ts">
+    import { ref } from 'vue'
+
+    const name = ref('Vue.js')
+
+    function greet(event) {
+      alert(`Hello ${name.value}!`)
+      // `event` はネイディブ DOM イベントです。
+      if (event) {
+        alert(event.target.tagName)
+      }
+    }
+   </script>
+   ```
