@@ -53,7 +53,7 @@ $ git config user.email "{設定したいメアド}"
 
 ---
 
-**【コミットメッセージ】**
+## **<font color="#00ff00">コミットメッセージについて</font>**
 
 [この記事](https://qiita.com/itosho/items/9565c6ad2ffc24c09364)を参考にしてる。
 
@@ -83,3 +83,46 @@ $ git config user.email "{設定したいメアド}"
 - add：新規（ファイル）機能追加
 - update：機能修正（バグではない）
 - remove：削除（ファイル）
+
+<br />
+<br />
+
+---
+
+## **<font color="#00ff00">stash</font>**
+
+**1. 変更を退避**
+
+```git command: スタッシュのコマンド
+$ git stash -u
+```
+
+コミットしていない変更がある状態で上記のコマンドを実行すると、コミットしていない変更した部分が退避される。<br />
+「コミットしていない変更」とは、`git addしたもの`も`git addしていないもの`もどちらも含まれる。
+
+<br />
+
+**2. 退避した作業の一覧を見る**
+
+```git command: 退避した作業の一覧を見るコマンド
+$ git stash list
+```
+
+<br />
+
+**3. pull などする**
+
+<br />
+
+**4. 退避した作業を戻す**
+
+```git command: 退避した作業の一覧を見るコマンド
+$ git stash apply stash@{0}
+```
+
+<br />
+<br />
+
+---
+
+## **<font color="#00ff00">{次に書きたい内容}</font>**
