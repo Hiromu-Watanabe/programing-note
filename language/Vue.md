@@ -92,6 +92,56 @@ onMounted(async () => {
 
 ## **<font color="#00ff00">watchEffect()</font>**
 
+Vue3 の Composition API には、watchEffect という機能があります。watchEffect は、リアクティブな状態の変更を監視し、その変更に応じて副作用を実行することができます。[^1]
+
+[^1]: https://qiita.com/doz13189/items/d09cfc6e1ff38621c2cc
+
+例えば、次のようなコードがあります。
+
+```vue:watchEffectの例
+<script setup lang="ts">
+import { ref, watchEffect } from 'vue';
+
+const count = ref(0);
+let sum = 0;
+
+watchEffect(() => {
+  sum = count.value + 1
+})
+</script>
+```
+
+このコードでは、count というリアクティブな変数の値が変更される度にそれを検知して、watchEffect 関数が実行される。
+そのため count の値が変更されるたびに、sum の値も更新されます。
+
+このように、watchEffect はリアクティブな状態の変更を監視し、その変更に応じて副作用を実行することができる機能です。
+
+<br />
+<br />
+
+computed でも同じようなことが出来るが、computed では非同期関数を使用できない。
+リアクティブに変更を検知して値を更新する処理に非同期関数が含まれる場合は watchEffect と ref を併用することで実現できる。
+
+```vue:watchEffectとrefの組み合わせ
+<script setup lang="ts">
+const reservedMenus = ref<OrderModel[]>([]) // 非同期処理の結果を格納するためのリアクティブな変数
+/* 注文済商品 */
+watchEffect(async () => {
+  const orders = (reserve.value?.orders?.items ?? [])
+    .filter(() => /* フィルターやソート */)
+
+  const asyncOrders: OrderModel[] = await Promise.all(
+    orders.map(async (menu) => ({
+      ...menu,
+      product: { ...menu.product, price: await getPrice(menu.product) },
+    }))
+  )
+
+  reservedMenus.value = asyncOrders // 非同期処理の結果をリアクティブな変数に格納
+})
+</script>
+```
+
 <br />
 <br />
 
