@@ -117,7 +117,7 @@ $ git stash list
 **4. 退避した作業を戻す**
 
 ```git command: 退避した作業の一覧を見るコマンド
-$ git stash apply stash@{0}
+$ git stash apply stash@{[スタッシュ番号]}
 ```
 
 <br />
