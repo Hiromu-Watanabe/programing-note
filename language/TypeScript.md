@@ -44,8 +44,8 @@ npm i @types/ライブラリ名
 
 追加でダウンロードが必要ない場合の基準
 
-- GitHub のリポジトリのルートディレクトリに`index.d.ts`のファイルがある
-- package.json の`typings`に上記の`index.d.ts`の記述がある
+- GitHub のリポジトリのルートディレクトリに<font color="orange">index.d.ts</font>のファイルがある
+- package.json の`typings`に上記の<font color="orange">index.d.ts</font>の記述がある
 
 ※上記の 2 つに当てはまればデフォルトで型情報を持っている
 
