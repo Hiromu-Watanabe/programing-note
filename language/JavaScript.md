@@ -1,6 +1,6 @@
 # JavaScript
 
-<img src="../images/JavaScript_image.png" width="100%" alt="Vue.jsのイメージ">
+<img src="../images/JavaScript_image.png" width="100%" alt="Javascriptのイメージ">
 JavaScriptは主にウェブブラウザの中で動くプログラミング言語。（Node.jsを除く）
 
 主に使われている用途は以下の 2 つの認識。
