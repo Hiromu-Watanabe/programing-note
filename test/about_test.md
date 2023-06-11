@@ -99,51 +99,48 @@ Jest との関係性については、Jest は JavaScript、TypeScript におけ
 
 **【使用例】**
 
-以下の関数をテストする場合
+以下のような商品の税込みの値を算出する関数をテストする場合
 
 <font color="orange">UnitPriceUtils.ts</font>
 
 ```ts: テスト対象のコード
 /**
- * 消区(消費税区分)： "別"(税抜)の場合
- * @param {string} taxationCategory -[商品].[課税区分]
- * @param {number} unitPrice -[商品].[本体価格] or [価格改定].[単価]
- * @param {number | null | undefined} standardTaxRate -通常の税率
- * @param {number | null | undefined} standardTaxRate -軽減された税率
- * @param {string} screenName -画面名
- * @returns {number} 計算後の商品単価
+ * 特定の税区分に基づいて税抜きの商品価格を計算します。
+ * @param {string} category - 商品の税区分
+ * @param {number} basePrice - 商品の基本価格
+ * @param {number | null | undefined} normalRate - 通常の税率
+ * @param {number | null | undefined} reducedRate - 軽減税率
+ * @param {string} screen - エラー識別用の画面名
+ * @returns {number} 計算された税込の商品価格
  */
 export const calculateTaxExcludedPrice = async (
-  taxationCategory: string,
-  unitPrice: number,
-  standardTaxRate: number | null | undefined,
-  reducedTaxRate: number | null | undefined,
-  screenName: string
+  category: string,
+  basePrice: number,
+  normalRate: number | null | undefined,
+  reducedRate: number | null | undefined,
+  screen: string
 ): Promise<number> => {
 
-  let taxRatePermille: number
+  let permilleRate: number
 
-  switch (taxationCategory) {
-    /* 課税区分 === "通常商品" */
+  switch (category) {
+    /* 税区分 === "通常" */
     case TaxationCategory.Regular:
-      if (!standardTaxRate) {
-        throw new Error(`【${screenName}】通常の税率が取得できません`)
+      if (!normalRate) {
+        throw new Error(`【${screen}】通常の税率を取得できません`)
       }
-      taxRatePermille = standardTaxRate * 10
-      return Math.floor((unitPrice * (1000 + taxRatePermille)) / 1000)
-    /* 課税区分 === "軽減税率対象商品" */
+
+      permilleRate = normalRate * 10
+      return Math.floor((basePrice * (1000 + permilleRate)) / 1000)
+    /* 税区分 === "軽減税率" */
     case TaxationCategory.ReducedTaxRate:
-      if (!reducedTaxRate) {
-        throw new Error(`【${screenName}】軽減された税率が取得できません`)
+      if (!reducedRate) {
+        throw new Error(`【${screen}】軽減税率を取得できません`)
       }
-      taxRatePermille = reducedTaxRate * 10
-      return Math.floor((unitPrice * (1000 + taxRatePermille)) / 1000)
-    /* 課税区分 === "経過措置対象商品" */
-    case TaxationCategory.TransitionalMeasures:
-      // TODO: 経過措置商品の場合の単価計算処理
-      return 0
+      permilleRate = reducedRate * 10
+      return Math.floor((basePrice * (1000 + permilleRate)) / 1000)
     default:
-      throw new Error(`【${screenName}】課税区分が不明です`)
+      throw new Error(`【${screen}】税区分が不明です`)
   }
 }
 ```
@@ -158,68 +155,56 @@ import { calculateTaxExcludedPrice } from './UnitPriceUtils'
 import { TaxationCategory } from '../helper/const'
 
 describe('calculateTaxExcludedPrice function', () => {
-  test('should correctly calculate for Regular products', async () => {
+  test('通常商品の場合、正しく計算されるべき', async () => {
     const result = await calculateTaxExcludedPrice(
       TaxationCategory.Regular,
       1000,
       8,
       null,
-      'TestScreen'
+      'テスト画面'
     )
     expect(result).toEqual(1080)
   })
 
-  test('should throw an error if standard tax rate is null for Regular products', async () => {
+  test('通常商品で税率がnullの場合、エラーをスローするべき', async () => {
     await expect(
       calculateTaxExcludedPrice(
         TaxationCategory.Regular,
         1000,
         null,
         null,
-        'TestScreen'
+        'テスト画面'
       )
-    ).rejects.toThrow('通常の税率が取得できません')
+    ).rejects.toThrow('通常の税率を取得できません')
   })
 
-  test('should correctly calculate for ReducedTaxRate products', async () => {
+  test('軽減税率商品の場合、正しく計算されるべき', async () => {
     const result = await calculateTaxExcludedPrice(
       TaxationCategory.ReducedTaxRate,
       1000,
       null,
       5,
-      'TestScreen'
+      'テスト画面'
     )
     expect(result).toEqual(1050)
   })
 
-  test('should throw an error if reduced tax rate is null for ReducedTaxRate products', async () => {
+  test('軽減税率商品で税率がnullの場合、エラーをスローするべき', async () => {
     await expect(
       calculateTaxExcludedPrice(
         TaxationCategory.ReducedTaxRate,
         1000,
         null,
         null,
-        'TestScreen'
+        'テスト画面'
       )
-    ).rejects.toThrow('軽減された税率が取得できません')
+    ).rejects.toThrow('軽減税率を取得できません')
   })
 
-  test('should return 0 for TransitionalMeasures products', async () => {
-    const result = await calculateTaxExcludedPrice(
-      TaxationCategory.TransitionalMeasures,
-      1000,
-      8,
-      5,
-      'TestScreen'
-    )
-    expect(result).toEqual(0)
-  })
-
-  test('should throw an error if taxation category is unknown', async () => {
+  test('税区分が不明の場合、エラーをスローするべき', async () => {
     await expect(
-      calculateTaxExcludedPrice('Unknown', 1000, 8, 5, 'TestScreen')
-    ).rejects.toThrow('課税区分が不明です')
+      calculateTaxExcludedPrice('不明', 1000, 8, 5, 'テスト画面')
+    ).rejects.toThrow('税区分が不明です')
   })
 })
-
 ```
