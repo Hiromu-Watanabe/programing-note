@@ -75,6 +75,8 @@ Javascript の一般的なテストフレームワークは Jest?
 
 <img src="../images/Vitest_image.png" width="100%" alt="Vue.jsのイメージ">
 
+[公式リファレンス](https://vitest.dev/api/)
+
 Vitest は、Vite ベースのテスティングフレームワークです[^1]。
 
 Vitest は、公式で「Blazing Fast Unit Test Framework」と謳われています[^1]。つまり、とても高速なユニットテストフレームワークです。
@@ -167,8 +169,8 @@ describe('calculateTaxExcludedPrice function', () => {
   })
 
   test('通常商品で税率がnullの場合、エラーをスローするべき', async () => {
-    await expect(
-      calculateTaxExcludedPrice(
+    expect(
+      await calculateTaxExcludedPrice(
         TaxationCategory.Regular,
         1000,
         null,
@@ -190,8 +192,8 @@ describe('calculateTaxExcludedPrice function', () => {
   })
 
   test('軽減税率商品で税率がnullの場合、エラーをスローするべき', async () => {
-    await expect(
-      calculateTaxExcludedPrice(
+    expect(
+      await calculateTaxExcludedPrice(
         TaxationCategory.ReducedTaxRate,
         1000,
         null,
@@ -202,9 +204,87 @@ describe('calculateTaxExcludedPrice function', () => {
   })
 
   test('税区分が不明の場合、エラーをスローするべき', async () => {
-    await expect(
-      calculateTaxExcludedPrice('不明', 1000, 8, 5, 'テスト画面')
+    expect(
+      await calculateTaxExcludedPrice('不明', 1000, 8, 5, 'テスト画面')
     ).rejects.toThrow('税区分が不明です')
   })
+})
+```
+
+<br>
+<br>
+
+## **【it 関数】**
+
+内部でエラーが発生したとき、そのテストを失敗として扱う。<br>
+つまり、期待する結果と異なるならエラーを投げ、<br>
+期待どおりならエラーを投げないというテストコードを書くことになる。
+
+<br>
+<be>
+
+## **【describe 関数】**
+
+describe は第 1 引数に`文字列`、第 2 引数に`関数`を受け取る関数。<br>
+
+describe はテストスイートを定義する。<br>
+テストスイートは関連するテストやベンチマーク、または他のネストされたスイートのセットを定義する。<br>
+これにより、テストとベンチマークを整理し、レポートをより明確にすることができる。<br>
+
+たとえば、以下のコードでは describe('person', () => {...})が新しいテストスイートを作成し、その中に 3 つのテストケースを含んでいる
+
+```ts: テストコードの例
+import { describe, expect, test } from 'vitest'
+
+const person = {
+  isActive: true,
+  age: 32,
+}
+
+describe('person', () => {
+  test('person is defined', () => {
+    expect(person).toBeDefined()
+  })
+
+  test('is active', () => {
+    expect(person.isActive).toBeTruthy()
+  })
+
+  test('age limit', () => {
+    expect(person.age).toBeLessThanOrEqual(32)
+  })
+})
+```
+
+describe ブロックはネストすることも可能で、これによりテストやベンチマークの階層構造を作ることができる。
+
+<br>
+
+**【describe と test の主な違い】**<br>
+
+- describe はテストケースをグループ化し、構造化するために使用される
+- test は個々のテストケースを定義するために使用される。
+
+<br>
+<br>
+
+## **【test 関数】**
+
+test は個々のテストケースを定義する。<br>
+test は一連の関連する期待値(expectations)を定義する。<br>
+第 1 引数に`テストの名前`、第 2 引数に`テストを実行するための期待値`を含む関数を受け取ります。
+
+また、オプションで、タイムアウトをミリ秒で指定して、何秒待ってから終了するかを指定できる。<br>
+デフォルトは 5 秒で、testTimeout でグローバルに設定できます。
+
+<br>
+
+例えば、以下のテストは、Math.sqrt(4)が 2 であることを期待します
+
+```ts: テストコードの例
+import { expect, test } from 'vitest'
+
+test('should work as expected', () => {
+  expect(Math.sqrt(4)).toBe(2)
 })
 ```
