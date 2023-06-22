@@ -104,7 +104,7 @@ $ git stash -u
 
 **2. 退避した作業の一覧を見る**
 
-```git command: 退避した作業の一覧を見るコマンド
+```git command: 退避した内容の一覧を見るコマンド
 $ git stash list
 ```
 
@@ -114,10 +114,28 @@ $ git stash list
 
 <br />
 
-**4. 退避した作業を戻す**
+**4. 指定した退避内容を戻す**
 
-```git command: 退避した作業の一覧を見るコマンド
+```git command: 退避した内容を戻すコマンド
 $ git stash apply stash@{[スタッシュ番号]}
+```
+
+<br />
+<br />
+
+**5. 指定した退避内容を削除する**
+
+```git command: 退避した内容を削除コマンド
+$ git stash drop stash@{[スタッシュ番号]}
+```
+
+<br />
+<br />
+
+**【番外編】指定した退避内容を戻すと同時に削除する**
+
+```git command: 指定した退避内容を戻すと同時に削除するコマンド
+$ git stash pop stash@{[スタッシュ番号]}
 ```
 
 <br />
