@@ -3,6 +3,12 @@
 
 <br>
 
+現在は docker-compose の後発として Docker のサブコマンドで`compose`オプションがある。<br>
+互換性を保ち docker-compose と同じ機能が使える。
+docker-compose コマンドの将来的な置き換えを目指して開発された機能のため、`compose`オプションを使用した方が良さそう？
+
+<br>
+
 # docker-compose とは
 
 複数コンテナを立てる場合に、Docer だけで管理するのは「個別の起動」や「ネットワークの指定」がめんどくさい<br>
