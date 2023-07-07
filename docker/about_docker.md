@@ -10,4 +10,9 @@ Docker があれば、Dockerfile を共有するだけで同じ開発環境が�
 
 ![Dockerfileがコンテナになるまでの順序イメージ](../images/Docker_sequential.png)
 
-![docker runの裏で起きていること](backend_process.png)
+<br>
+<br>
+
+## docker run 実行時に裏で起きていること
+
+![docker runの裏で起きていること](../images/backend_process.png)
