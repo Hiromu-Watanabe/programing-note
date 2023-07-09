@@ -16,3 +16,47 @@ Docker があれば、Dockerfile を共有するだけで同じ開発環境が�
 ## docker run 実行時に裏で起きていること
 
 ![docker runの裏で起きていること](../images/backend_process.png)
+
+<br><br>
+
+---
+
+## 【コンテナとイメージの削除方法】
+
+1.  コンテナ ID を確認
+
+```shell
+起動しているコンテナ
+
+$ docker ps
+
+停止しているコンテナ
+
+$ docker ps -a
+```
+
+<br><br>
+
+2.  コンテナが起動している場合は、コンテナの停止
+
+```shell
+$ docker stop ${コンテナID}
+```
+
+<br><br>
+
+3. コンテナの削除
+
+```shell
+$ docker rm ${コンテナID}
+```
+
+<br><br>
+
+3. イメージの削除
+
+```shell
+$ docker rmi ${イメージID}
+```
+
+<br><br>

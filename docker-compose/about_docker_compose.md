@@ -44,8 +44,7 @@ web サーバーのコンテナを立ち上げる
 $ docker run {イメージ名}
 ```
 
-<br>
-<br>
+<br><br>
 
 ## **【docker-compose】**
 
@@ -67,8 +66,7 @@ $ docker-compose up
 - 実際のアプリ開発でアプリケーションコンテナ（Next.js, Ruby on Rails）は自前の Dockerfile でイメージを作成
 - MySQL, Redis, nginx などのミドルウェアは Docker Hub に公開されている公式のイメージをそのまま使うことが多いらしい
 
-<br>
-<br>
+<br><br>
 
 ---
 
@@ -83,8 +81,86 @@ $ docker-compose up -d
 ※ "-d"オプションはバックグラウンドでコンテナを起動してくれる<br>
 （"-d"オプションがないとターミナルが起動したコンテナで占領されて$ Ctr + c で抜けるまでターミナル触れない）
 
+<br><br>
+
+例）go-tutorial というプロジェクト(ディレクトリ)配下で Golang のコンテナを以下の`Dockerfile`と`docker-compose.yml`で作成した場合、「**go-tutorial-app-1**」というコンテナが作成される。<br>
+この末尾の「-1」は`docker-compose up`を実行すると、デフォルトでは、コンテナ名は
+
+```
+<project>_<service>_<index>
+```
+
+という形式で作成される。
+
+\<project> : ディレクトリ名<br>
+\<service> : サービス名<br>
+\<index> : 同じサービスから生成されたコンテナのインスタンス番号（1 つ目のコンテナには "-1" 、2 つ目には "-2"）
+
 <br>
+
+【Dockerfile】
+
+```Dockerfile
+version: "3" # composeファイルのバージョン
+services:
+  app: # サービス名
+    build: . # ビルドに使用するDockerfileの場所
+    tty: true # コンテナの永続化
+    volumes:
+      - ./app:/go/src/app # マウントディレクトリ
+```
+
+【docker-compose.yml】
+
+```yml
+version: "3" # composeファイルのバージョン
+services:
+  app: # サービス名
+    build: . # ビルドに使用するDockerfileの場所
+    tty: true # コンテナの永続化
+    volumes:
+      - ./app:/go/src/app # マウントディレクトリ
+```
+
+<br><br>
+
+【コンテナ名に index を付けさせないようにする方法】
+
+「container-name: 」を使用してコンテナに固定の名前を指定することができる。
+
+```yml
+version: "3"
+services:
+  app:
+    build: .
+    tty: true
+    volumes:
+      - ./app:/go/src/app
+    container_name: go-tutorial-app # この部分でコンテナ名を固定させる
+```
+
+※ ただし、container_name を使用すると同一サービス（今回で言えば app）から複数のコンテナを作成することができない。例えば次のようなケース
+
+```yml
+version: "3"
+services:
+  app:
+    build: .
+    tty: true
+    volumes:
+      - ./app:/go/src/app
+    container_name: go-tutorial-app
+    scale: 2 # scaleによってappサービスから2つのコンテナを作成しようとしている
+```
+
+`container_name:`で固定の名前を割り当ててしまうと、2 つ目のコンテナを作成できなくなる。<br>
+⏩ Docker のコンテナ名はユニークでなければならないから
+
 <br>
+
+`container_name:`は、そのサービスから一つだけのコンテナを作成する場合、または明示的にそのコンテナに固定の名前を割り当てたい場合にのみ使用します。複数のインスタンスを作成したい場合や、Docker Compose によるデフォルトの命名規則で問題ない場合は、`container_name:`は省略した方が良さげ。
+
+<br><br>
 
 ---
 
@@ -100,3 +176,13 @@ bash を指定するとコンテナ内部の bash でコンテナ内に入るこ
 このコマンドはお決まりの呪文みたいなものなので、覚えてしまう。
 
 ※ Linux のコマンド書くとコンテナに対して Linux コマンドを実行できる
+
+<br><br>
+
+# docker compose オプション
+
+- コンテナ作成(ビルド)
+
+```shell
+$ docker compose up -d --build ${コンテナ名}
+```
