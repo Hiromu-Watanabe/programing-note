@@ -1,8 +1,12 @@
 # programing-note
 
-Keep a notebook of my daily learnings in programming.
+プログラミングで日々学んだことをこのノートにまとめる。
+
+<br><br>
 
 # 記入規則
+
+<br>
 
 ## **【色分け】🎨**
 
