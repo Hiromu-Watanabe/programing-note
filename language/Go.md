@@ -138,3 +138,157 @@ fmt.Println(c)
 ```
 
 make 関数は、これらの型のメモリを確保し、適切に初期化するために必要。
+
+<br><br>
+
+## **<font color="#00ff00">テスト</font>**
+
+Go には組み込みでユニットテストがサポートされている。<br>
+ファイル名の最後を<font color="orange">_test.go_</font>とすることで、「このファイルにはテスト関数が含まれてんで」と伝える。
+
+### 【テストの例】
+
+テスト対象のファイル
+
+```go
+// ファイル名: gteetings.go
+
+package greetings
+
+import (
+	"errors"
+	"fmt"
+	"math/rand"
+)
+
+// Hello returns a greeting for the named person.
+func Hello(name string) (string, error) {
+	// If no name was given, return an error with a message.
+	if name == "" {
+		return "", errors.New("empty name")
+	}
+
+	// Create a message using a random format.
+	message := fmt.Sprintf(randomFormat(), name) // テスト成功パターン
+	message := fmt.Sprint(randomFormat()) // テスト失敗パターン
+	return message, nil
+}
+
+// Hellos returns a map that associates each of the named people
+// with a greeting message.
+func Hellos(names []string) (map[string]string, error) {
+	// A map to associate names with messages.
+	messages := make(map[string]string)
+	// Loop through the received slice of names, calling
+	// the Hello function to get a message for each name.
+	for _, name := range names {
+			message, err := Hello(name)
+			if err != nil {
+					return nil, err
+			}
+			// In the map, associate the retrieved message with
+			// the name.
+			messages[name] = message
+	}
+	return messages, nil
+}
+
+// randomFormat returns one of a set of greeting messages. The returned
+// message is selected at random.
+func randomFormat() string {
+	// A slice of message formats.
+	formats := []string{
+		"Hi, %v. Welcome!",
+		"Great to see you, %v!",
+		"Hail, %v! Well met!",
+	}
+
+	// Return a randomly selected message format by specifying
+  // a random index for the slice of formats.
+	return formats[rand.Intn(len(formats))]
+}
+```
+
+テストファイル
+
+```go
+// ファイル名: greetings_test.go
+
+package greetings
+
+import (
+    "testing"
+    "regexp"
+)
+
+// TestHelloName 名前を指定してgreetings.Helloを呼び出し、
+// 有効な戻り値があるかどうかをチェックするテスト関数
+func TestHelloName(t *testing.T) {
+    name := "Gladys"
+    want := regexp.MustCompile(`\b`+name+`\b`)
+    msg, err := Hello("Gladys")
+    if !want.MatchString(msg) || err != nil {
+        t.Fatalf(`Hello("Gladys") = %q, %v, want match for %#q, nil`, msg, err, want)
+    }
+}
+
+// TestHelloEmptyは空の文字列でgreetings.Helloを呼び出す
+// エラーをチェックするテスト関数.
+func TestHelloEmpty(t *testing.T) {
+    msg, err := Hello("")
+    if msg != "" || err == nil {
+        t.Fatalf(`Hello("") = %q, %v, want "", error`, msg, err)
+    }
+}
+```
+
+### 【テストを実行】
+
+テスト成功パターン
+
+```shell
+# go testコマンドは、テストファイル（名前が_test.goで終わる）内のテスト関数（名前がTestで始まる）を実行する
+$ go test
+# [出力]
+# PASS
+# ok      {モジュール名}  0.002s
+
+# vフラグを追加すると、すべてのテストとその結果を一覧表示することができる。
+$ go test -v
+# [出力]
+# === RUN   TestHelloName
+# --- PASS: TestHelloName (0.00s)
+# === RUN   TestHelloEmpty
+# --- PASS: TestHelloEmpty (0.00s)
+# PASS
+# ok      {モジュール名}  0.003s
+```
+
+テスト失敗パターン
+
+```shell
+# -v フラグを付けずに go test を実行
+#  失敗したテストだけが出力されるので、テストがたくさんある場合には -v フラグはない方が良さそう
+$ go test
+# [出力]
+# --- FAIL: TestHelloName (0.00s)
+#     greetings_test.go:15: Hello("Gladys") = "Great to see you, %v!", <nil>, want match for `\bGladys\b`, nil
+# FAIL
+# exit status 1
+# FAIL    {モジュール名}  0.003s
+
+TestHelloNameテストは失敗して、TestHelloEmptyはまだパスしている。（正しくテスト動作している）
+
+
+# -v フラグ付けたバージョン
+$ go test -v
+# [出力]
+# === RUN   TestHelloName
+#     greetings_test.go:15: Hello("Gladys") = "Great to see you, %v!", <nil>, want match for `\bGladys\b`, nil
+# --- FAIL: TestHelloName (0.00s)
+# === RUN   TestHelloEmpty
+# --- PASS: TestHelloEmpty (0.00s)
+# FAIL
+# exit status 1
+# FAIL    github.com/Hiromu-Watanabe/go-tutorial  0.003s
+```
