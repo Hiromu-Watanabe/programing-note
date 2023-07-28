@@ -143,4 +143,49 @@ $ git stash pop stash@{[スタッシュ番号]}
 
 ---
 
-## **<font color="#00ff00">{次に書きたい内容}</font>**
+## **<font color="#00ff00">ブランチ</font>**
+
+**1. ブランチの一覧を表示**
+
+ローカルブランチの一覧
+
+```shell
+$ git branch
+```
+
+すべてのブランチ（リモートにある他の人が切ったブランチも含む）
+
+```shell
+$ git branch -a
+```
+
+**2. ブランチの追加**
+
+```shell
+$ git branch {追加したいブランチ名}
+```
+
+**3. ブランチの切り替え**
+
+```shell
+# ブランチの一覧を確認
+$ git branch
+## 出力 ##
+# * develop
+#   stg
+#   prod
+#   main
+
+$ git checkout stg
+## 出力 ##
+#   develop
+# * stg
+#   prod
+#   main
+```
+
+**4. ブランチの削除**
+
+```shell
+$ git branch -d {削除したいブランチ名}
+```
