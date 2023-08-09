@@ -7,8 +7,6 @@
 
 ## **<font color="#00ff00">Git config （設定情報）</font>**
 
----
-
 [この記事](https://note.nkmk.me/git-config-setting/)が参考になった。
 
 <br />
@@ -46,6 +44,45 @@ user.email の修正
 
 ```
 $ git config user.email "{設定したいメアド}"
+```
+
+<br />
+<br />
+
+---
+
+## **<font color="#00ff00">リモート設定</font>**
+
+現在のリモート設定を確認
+
+```shell
+$ git remote -v
+
+# 出力
+grc     codecommit::ap-northeast-1://{リポジトリ名} (fetch)
+grc     codecommit::ap-northeast-1://{リポジトリ名} (push)
+origin  git@github.com:{ユーザー or 組織名}/{リポジトリ名}.git (fetch)
+origin  git@github.com:{ユーザー or 組織名}/{リポジトリ名}.git (push)
+```
+
+<br>
+
+origin の URL を設定
+
+```shell
+$ git remote set-url origin [GitHubのリポジトリのURL]
+```
+
+<br>
+
+今いるブランチ`pull`コマンド実行時のデフォルトリモートを設定
+
+```shell
+# 例)`origin/stg`をpullコマンドのデフォルトのリモートに設定したい場合
+$ git branch --set-upstream-to=origin/stg stg
+
+# 出力
+Branch 'stg' set up to track remote branch 'stg' from 'origin'.
 ```
 
 <br />
@@ -222,4 +259,40 @@ $ git checkout stg
 
 ```shell
 $ git branch -d {削除したいブランチ名}
+```
+
+<br />
+<br />
+
+---
+
+## **<font color="#00ff00">コミットに関するコマンド</font>**
+
+**コミット取り消し**
+
+```shell
+$ git reset [打ち消したいコミットID]
+
+# 【resetオプション】
+
+# --softオプション
+$ git reset --soft
+# commitのみ取り消し（HEADの位置のみ修正）
+# 「コミットをする直前」の状態に戻る
+# 作業ディレクトリとステージングエリアはそのまま
+# 例）まとめてコミットしたかったのに1つしかコミットしていなかったとき
+# 例）まだ作業中なのにコミットしてしまったとき
+
+# -- mixedオプション
+$ git reset --mixed
+# commitとaddの取り消し（HEADの位置・インデックスが修正）
+# HEADと一緒にステージが巻き戻る
+# 作業ディレクトリのファイルは消えない
+# 例）git addでステージしたけど、やっぱり戻したいとき
+
+# -- hardオプション
+$ git reset --hard
+# 全部を取り消し（HEADの位置・インデックス・ワーキングツリーが修正）
+# もっとも強力なオプション
+# 例）ステージングエリアにも作業ディレクトリにも残したくないといった
 ```
