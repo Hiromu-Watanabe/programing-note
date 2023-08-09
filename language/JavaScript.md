@@ -45,3 +45,44 @@ Number 型は`小数点約17桁`まで精度を保証している
 
 - 小数点を整数に直して計算する
 - ライブラリを使用する
+
+<br />
+<br />
+
+---
+
+### 組み込み関数
+
+## **<font color="#00ff00">Array.prototype.sort()</font>**
+
+※ a を基準に考える
+| sort((a, b) => {処理結果})の戻り値 | ソート順 |
+| :-: | :- |
+| a > 0 | a を b の後に並べる |
+| a < 0 | a を b の前に並べる |
+| a === 0 | a と b の元の順序を維持 |
+
+<br><br>
+
+例) 数値と日付のソート例<br>
+[mdn web docs](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)で実際に動かせる
+
+```js
+/* 単純な数値 */
+const array1 = [0, 1, 2, 10, 1000]
+console.log(array1.sort(a, b) => a - b) // 昇順
+console.log(array1.sort(a, b) => b - a) // 降順
+
+
+/* 日付 */
+import dayjs from 'dayjs' // ライブラリのdayjsを使用した場合
+const array2 = ['2023-08-04T12:00:00.000+09:00', '2023-08-05T12:00:00.000+09:00', '2023-08-06T12:00:00.000+09:00']
+// 昇順
+console.log(array1.sort(a, b) =>
+  dayjs(a?.orderCreatedDatetime ?? 0).valueOf() -
+  dayjs(b?.orderCreatedDatetime ?? 0).valueOf())
+// 降順
+console.log(array1.sort(a, b) =>
+  dayjs(b?.orderCreatedDatetime ?? 0).valueOf() -
+  dayjs(a?.orderCreatedDatetime ?? 0).valueOf())
+```
