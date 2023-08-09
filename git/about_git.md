@@ -93,8 +93,13 @@ $ git config user.email "{設定したいメアド}"
 
 **1. 変更を退避**
 
-```git command: スタッシュのコマンド
-$ git stash -u
+```shell: スタッシュのコマンド
+$ git stash # スタッシュのメッセージを設定してスタッシュする
+$ git stash save "message" # スタッシュのメッセージを設定してスタッシュする
+$ git stash -u # 未追跡のファイルも全てスタッシュされる
+$ git stash -k # `git stash --keep-index` : 追跡されているファイルをスタッシュに保存するが、ステージングエリアにある変更はそのまま保持
+
+# .gitignoreのファイルは依然としてスタッシュに含まれない
 ```
 
 コミットしていない変更がある状態で上記のコマンドを実行すると、コミットしていない変更した部分が退避される。<br />
@@ -104,7 +109,7 @@ $ git stash -u
 
 **2. 退避した作業の一覧を見る**
 
-```git command: 退避した内容の一覧を見るコマンド
+```shell: 退避した内容の一覧を見るコマンド
 $ git stash list
 ```
 
@@ -116,7 +121,7 @@ $ git stash list
 
 **4. 指定した退避内容を戻す**
 
-```git command: 退避した内容を戻すコマンド
+```shell: 退避した内容を戻すコマンド
 $ git stash apply stash@{[スタッシュ番号]}
 ```
 
@@ -125,8 +130,9 @@ $ git stash apply stash@{[スタッシュ番号]}
 
 **5. 指定した退避内容を削除する**
 
-```git command: 退避した内容を削除コマンド
-$ git stash drop stash@{[スタッシュ番号]}
+```shell: 退避した内容を削除コマンド
+$ git stash drop stash@{N} # N番目のスタッシュを削除
+$ git stash clear # スタッシュを全削除
 ```
 
 <br />
@@ -134,8 +140,36 @@ $ git stash drop stash@{[スタッシュ番号]}
 
 **【番外編】指定した退避内容を戻すと同時に削除する**
 
-```git command: 指定した退避内容を戻すと同時に削除するコマンド
-$ git stash pop stash@{[スタッシュ番号]}
+```shell: 指定した退避内容を戻すと同時に削除するコマンド
+$ git stash pop # 最新のスタッシュを適用し、削除
+$ git stash pop stash@{[スタッシュ番号]} # N番目のスタッシュを適用し、削除
+```
+
+<br />
+<br />
+
+**【Tips】**
+
+N 番目にスタッシュしたファイルの一覧を表示
+
+```shell
+$ git stash show stash@{N}
+```
+
+<br />
+
+N 番目にスタッシュしたファイルの変更差分を表示
+
+```shell
+$ git stash show -p stash@{N}
+```
+
+<br />
+
+N 番目にスタッシュしたファイルの変更差分を表示
+
+```shell
+$ git stash show -p stash@{N}
 ```
 
 <br />
