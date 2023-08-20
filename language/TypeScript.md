@@ -5,6 +5,7 @@
 
 - [サバイバル TypeScript](https://typescriptbook.jp/)
 - [TypeScript Deep Dive](https://typescript-jp.gitbook.io/deep-dive/getting-started)
+- [type-challenges](https://github.com/type-challenges/type-challenges)
 
 <br />
 <br />
