@@ -1,8 +1,11 @@
 # TypeScript
 
 <img src="../images/TypeScript_image.png" width="100%" alt="TypeScirptのイメージ">
+【学習に良さそうなサイト】
 
-学習時はとりあえず [ サバイバル TypeScript ](https://typescriptbook.jp/) を見ておけば OK と思う
+- [サバイバル TypeScript](https://typescriptbook.jp/)
+- [TypeScript Deep Dive](https://typescript-jp.gitbook.io/deep-dive/getting-started)
+- [type-challenges](https://github.com/type-challenges/type-challenges)
 
 <br />
 <br />

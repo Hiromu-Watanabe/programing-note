@@ -99,6 +99,23 @@ Branch 'stg' set up to track remote branch 'stg' from 'origin'.
 
 ---
 
+## **<font color="#00ff00">リポジトリ作成後の初っ端</font>**
+
+**【リポジトリをそのまま clone】**
+
+```shell
+$ git clone https://github.com/${ユーザー名}/${リポジトリ名}.git
+```
+
+**【その他もろもろパターン】**
+
+<img src="../images/start_repository.png" width="100%" alt="GitHubから拝借">
+
+<br />
+<br />
+
+---
+
 ## **<font color="#00ff00">コミットメッセージについて</font>**
 
 [この記事](https://qiita.com/itosho/items/9565c6ad2ffc24c09364)を参考にしてる。
