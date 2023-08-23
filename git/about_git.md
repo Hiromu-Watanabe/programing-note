@@ -5,6 +5,15 @@
 <br />
 <br />
 
+## **<font color="#00ff00">Git の仕組み図</font>**
+
+<img src="../images/Git_structure_image.png" width="100%" alt="Gitのイメージ">
+
+<br />
+<br />
+
+---
+
 ## **<font color="#00ff00">Git config （設定情報）</font>**
 
 [この記事](https://note.nkmk.me/git-config-setting/)が参考になった。
@@ -131,7 +140,7 @@ Branch 'stg' set up to track remote branch 'stg' from 'origin'.
 **1. 変更を退避**
 
 ```shell: スタッシュのコマンド
-$ git stash # スタッシュのメッセージを設定してスタッシュする
+$ git stash # スタッシュのメッセージを設定せずにスタッシュする
 $ git stash save "message" # スタッシュのメッセージを設定してスタッシュする
 $ git stash -u # 未追跡のファイルも全てスタッシュされる
 $ git stash -k # `git stash --keep-index` : 追跡されているファイルをスタッシュに保存するが、ステージングエリアにある変更はそのまま保持
@@ -179,7 +188,7 @@ $ git stash clear # スタッシュを全削除
 
 ```shell: 指定した退避内容を戻すと同時に削除するコマンド
 $ git stash pop # 最新のスタッシュを適用し、削除
-$ git stash pop stash@{[スタッシュ番号]} # N番目のスタッシュを適用し、削除
+$ git stash pop stash@{n} # N番目のスタッシュを適用し、削除
 ```
 
 <br />
@@ -295,4 +304,27 @@ $ git reset --hard
 # 全部を取り消し（HEADの位置・インデックス・ワーキングツリーが修正）
 # もっとも強力なオプション
 # 例）ステージングエリアにも作業ディレクトリにも残したくないといった
+```
+
+<br />
+<br />
+
+---
+
+## **<font color="#00ff00">マージに関するコマンド</font>**
+
+マージの実行（main ブランチに dev ブランチをマージ）
+
+```shell
+# マージを実行したいブランチに移動
+$ git checkout main
+
+# マージ実行
+$ git merge dev
+```
+
+マージ操作の中止
+
+```shell
+$ git merge --abort
 ```
