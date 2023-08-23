@@ -198,3 +198,77 @@ watchEffect(async () => {
     }
    </script>
    ```
+
+<br />
+<br />
+
+---
+
+## **<font color="#00ff00">computed()</font>**
+
+[公式 docs](https://ja.vuejs.org/api/reactivity-core.html#computed)
+
+ゲッター関数を受け取り、ゲッターからの戻り値に対して読み取り専用のリアクティブな ref オブジェクトを返す
+
+```ts
+// 読み取り専用
+function computed<T>(
+  getter: () => T,
+  // 下記の "Computed Debugging" リンクをご参照ください
+  debuggerOptions?: DebuggerOptions
+): Readonly<Ref<Readonly<T>>>;
+
+--------------------------------------
+
+// 例) 読み取り専用の算出 ref の作成:
+const count = ref(1);
+const plusOne = computed(() => count.value + 1);
+
+console.log(plusOne.value); // 2
+
+plusOne.value++; // エラー
+```
+
+<br>
+
+また、get 関数と set 関数を持つオブジェクトを受け取り、書き込み可な ref オブジェクトを作成することができる
+
+```ts
+// 書き込み可
+function computed<T>(
+  options: {
+    get: () => T;
+    set: (value: T) => void;
+  },
+  debuggerOptions?: DebuggerOptions
+): Ref<T>;
+
+--------------------------------------
+
+// 例) 書き込み可の算出 ref の作成:
+const count = ref(1);
+const plusOne = computed({
+  get: () => count.value + 1,
+  set: (val) => {
+    count.value = val - 1;
+  },
+});
+
+plusOne.value = 1;
+console.log(count.value); // 0
+```
+
+<br>
+
+デバッグ
+
+```ts
+const plusOne = computed(() => count.value + 1, {
+  onTrack(e) {
+    debugger;
+  },
+  onTrigger(e) {
+    debugger;
+  },
+});
+```
