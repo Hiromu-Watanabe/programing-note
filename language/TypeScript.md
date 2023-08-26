@@ -114,3 +114,44 @@ type PartialPerson = Omit<Person, 'address'>;
 //     age: number;
 // }
 ```
+
+<br />
+<br />
+
+---
+
+## **<font color="#00ff00">「interface」 と 「type alias」 の違い</font>**
+
+interface と type alias はほとんど同じ(細かい違いはある)<br>
+interface の 1 番のメリットは interface で定義すると必ずオブジェクトであることが保証される
+
+```typescript
+// interface
+// オブジェクトのみ
+interface Human {
+  name: string;
+  age: number;
+}
+
+// type alias
+// 全部いける
+type Human = {
+  name: string;
+  age: number;
+};
+```
+
+## **<font color="#00ff00">メソッドの型定義</font>**
+
+```typescript
+interface Human {
+  name: string;
+  age: number;
+  /* 下記2つのどっちでもいける */
+  greeting: (message: string) => void;
+
+  // ES6のこの書き方だと型推論も同じ表示になる
+  // メソッド( オブジェクトの中の関数 )にのみ有効な書き方
+  greeting(message: string): void;
+}
+```
