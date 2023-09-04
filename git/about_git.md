@@ -281,6 +281,12 @@ $ git checkout stg
 #   main
 ```
 
+**3.5. ブランチの作成 & 切り替え**
+
+```shell
+git branch -b {ブランチ名}
+```
+
 **4. ブランチの削除**
 
 ```shell
@@ -336,7 +342,7 @@ $ git reset --hard
 # マージを実行したいブランチに移動
 $ git checkout main
 
-# マージ実行
+# mainブランチにdevブランチをマージ実行
 $ git merge dev
 ```
 
