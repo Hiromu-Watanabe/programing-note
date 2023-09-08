@@ -75,9 +75,9 @@ function foo(arg: string | null | undefined) {
 ※ a を基準に考える
 | sort((a, b) => {処理結果})の戻り値 | ソート順 |
 | :-: | :- |
-| a > 0 | a を b の後に並べる |
-| a < 0 | a を b の前に並べる |
-| a === 0 | a と b の元の順序を維持 |
+| a > b | a を b の後に並べる |
+| a < b | a を b の前に並べる |
+| a === b | a と b の元の順序を維持 |
 
 <br><br>
 
