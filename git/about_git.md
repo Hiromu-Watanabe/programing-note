@@ -284,7 +284,7 @@ $ git checkout stg
 **3.5. ブランチの作成 & 切り替え**
 
 ```shell
-git branch -b {ブランチ名}
+git checkout -b {ブランチ名}
 ```
 
 **4. ブランチの削除**
