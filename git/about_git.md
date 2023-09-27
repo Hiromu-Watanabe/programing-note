@@ -307,6 +307,9 @@ $ git reset [打ち消したいコミットID]
 
 # 【resetオプション】
 
+# 直前のコミット操作を取り消す
+git reset --soft HEAD^
+
 # --softオプション
 $ git reset --soft
 # commitのみ取り消し（HEADの位置のみ修正）
