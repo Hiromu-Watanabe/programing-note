@@ -272,3 +272,102 @@ const plusOne = computed(() => count.value + 1, {
   },
 });
 ```
+
+## **<font color="#00ff00">vee-validate と yup を用いたバリデーション実装</font>**
+
+[vee-validate 公式](https://vee-validate.logaretm.com/v4/api/use-form/)
+
+[vee-validate GitHub リポジトリ](https://github.com/logaretm/vee-validate)
+
+[yup GitHub リポジトリ](https://github.com/jquense/yup)
+
+【詰まったポイント】
+
+useForm と useField で script タグ内でどちらも定義する場合、useField を useForm の後に記載しないと正しくバリデーションが動かなかった。
+下記の例では必須項目のエラーが常に出続けていた。
+
+- おかしな挙動をしてた例
+
+```TypeScript
+/* 入力値 */
+const { value: email } = useField<string>('email')
+const { value: emailConfirmation } = useField<string>('emailConfirmation')
+const { value: password } = useField<string>('password')
+const { value: passwordConfirmation } = useField<string>('passwordConfirmation')
+
+/* 入力値スキーマ */
+const schema = object({
+  email: string()
+    .email(emailMessage)
+    .matches(REGEXP.EMAIL, emailMessage)
+    .max(80, maxLengthMessage(80))
+    .required(requiredMessage),
+  emailConfirmation: string()
+    .email(emailMessage)
+    .matches(REGEXP.EMAIL, emailMessage)
+    .max(80, maxLengthMessage(80))
+    .oneOf([yupRef('email'), null, undefined, ''], emailNotMatchMessage)
+    .required(requiredMessage),
+  password: string()
+    .min(8, minLengthMessage(8))
+    .max(12, maxLengthMessage(12))
+    .matches(REGEXP.PASSWORD, passwordMessage)
+    .required(requiredMessage),
+  passwordConfirmation: string()
+    .min(8, minLengthMessage(8))
+    .max(12, maxLengthMessage(12))
+    .matches(REGEXP.PASSWORD, passwordMessage)
+    .oneOf([yupRef('password'), null, undefined, ''], passwordNotMatchMessage)
+    .required(requiredMessage),
+})
+
+/* Fieldで作成されたフィールドをグループ化 */
+const { handleSubmit, validate, values, errors } = useForm({
+  validationSchema: schema,
+})
+```
+
+- 正しく動いた例
+
+```TypeScript
+/* 入力値スキーマ */
+const schema = object({
+  email: string()
+    .email(emailMessage)
+    .matches(REGEXP.EMAIL, emailMessage)
+    .max(80, maxLengthMessage(80))
+    .required(requiredMessage),
+  emailConfirmation: string()
+    .email(emailMessage)
+    .matches(REGEXP.EMAIL, emailMessage)
+    .max(80, maxLengthMessage(80))
+    .oneOf([yupRef('email'), null, undefined, ''], emailNotMatchMessage)
+    .required(requiredMessage),
+  password: string()
+    .min(8, minLengthMessage(8))
+    .max(12, maxLengthMessage(12))
+    .matches(REGEXP.PASSWORD, passwordMessage)
+    .required(requiredMessage),
+  passwordConfirmation: string()
+    .min(8, minLengthMessage(8))
+    .max(12, maxLengthMessage(12))
+    .matches(REGEXP.PASSWORD, passwordMessage)
+    .oneOf([yupRef('password'), null, undefined, ''], passwordNotMatchMessage)
+    .required(requiredMessage),
+})
+
+/* Fieldで作成されたフィールドをグループ化 */
+const { handleSubmit, validate, values, errors } = useForm({
+  validationSchema: schema,
+})
+
+/* 入力値 */
+const { value: email } = useField<string>('email')
+const { value: emailConfirmation } = useField<string>('emailConfirmation')
+const { value: password } = useField<string>('password')
+const { value: passwordConfirmation } = useField<string>('passwordConfirmation')
+```
+
+ref の値のように script タグの上の方で定義したかったから、
+useForm より先に useField を書いてたけど正しく動作しなかった。
+時間ある時になんでそんな挙動したか vee-validate の処理の流れを追ってみよう
