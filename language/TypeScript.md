@@ -155,3 +155,67 @@ interface Human {
   greeting(message: string): void;
 }
 ```
+
+<br><br>
+
+## **<font color="#00ff00">呼び出しシグネチャに関するエラー</font>**
+
+下記のような Pinia の store があって getter の getId を別ファイルで使用したい場合。
+この getter に記述しているメソッドは呼び出す時に`getId()`のように関数の呼び出し方法では TypeScript の型エラーになる。
+Vue.js でいうところの computed の呼び出し方みたいな感じで、内部では関数的な動きをしてるけど、呼び出す時はただのプロパティとして呼び出さないといけない。
+
+```typescript
+// src/stores/user.ts
+import { defineStore } from "pinia";
+
+export const useUserStore = defineStore({
+  id: "user",
+  state: (): User => ({
+    id: "",
+    loginId: "",
+    name: "",
+    isCompanyOwner: null,
+  }),
+  getters: {
+    getAccount(): User {
+      return this;
+    },
+    getContacts(): User {
+      return this;
+    },
+    async getId(): Promise<string> {
+      if (this.id != null) return this.id;
+      try {
+        const getId = await getCurrentUserTableId();
+        if (!getId) throw new Error("User Data Not Found");
+        return getId;
+      } catch (e) {
+        throw new Error("User Data Not Found");
+      }
+      // return this.id
+    },
+  },
+});
+
+// Cognitoユーザー属性情報取得
+const getCurrentUserTableId = async () => {
+  const user: CognitoUser = await Auth.currentAuthenticatedUser();
+  return user.getUsername();
+};
+```
+
+```typescript
+// 呼び出し側のファイル
+
+// OKパターン
+if (userStore.id == null) await userStore.getId;
+
+// NGパターン
+/**
+ * 【エラー内容】
+ * この式は呼び出し可能ではありません。
+ * 型 'Promise<string>' には呼び出しシグネチャがありません。ts(2349)
+ * (property) getId: Promise<string>
+ */
+if (userStore.id == null) await userStore.getId();
+```
