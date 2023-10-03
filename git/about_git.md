@@ -465,3 +465,15 @@ $ git merge dev
 ```shell
 $ git merge --abort
 ```
+
+履歴の表示
+
+git の履歴を表示するコマンド
+
+```shell
+# 単純な履歴を表示
+$ git log
+
+# 変更ファイルリスト一覧も表示
+$ git log --name-status
+```
