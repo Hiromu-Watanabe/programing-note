@@ -310,6 +310,7 @@ $ git reset [打ち消したいコミットID]
 # 直前のコミット操作を取り消す ※ 劇薬のため注意！
 git reset --soft HEAD^
 # コミット前のローカルファイル(新規ファイル以外)が全部消えてしまう
+# 全部消えた例の記事 : https://zenn.dev/fukutan/articles/a688699f120071
 
 # --softオプション
 $ git reset --soft
