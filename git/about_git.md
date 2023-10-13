@@ -308,7 +308,7 @@ $ git reset [打ち消したいコミットID]
 # 【resetオプション】
 
 # 直前のコミット操作を取り消す ※ 劇薬のため注意！
-git reset --soft HEAD^
+git reset --hard HEAD^
 # コミット前のローカルファイル(新規ファイル以外)が全部消えてしまう
 # 全部消えた例の記事 : https://zenn.dev/fukutan/articles/a688699f120071
 
@@ -466,7 +466,9 @@ $ git merge dev
 $ git merge --abort
 ```
 
-履歴の表示
+<br><br>
+
+## **<font color="#00ff00">履歴の表示コマンド</font>**
 
 git の履歴を表示するコマンド
 
@@ -476,4 +478,41 @@ $ git log
 
 # 変更ファイルリスト一覧も表示
 $ git log --name-status
+```
+
+<br><br>
+
+## **<font color="#00ff00">ローカルとリモートブランチの差分を見る方法</font>**
+
+[引用記事](https://salumarine.com/how-to-compare-a-local-git-branch-with-its-remote-branch/)
+
+前提条件
+
+```shell
+# まずはgit fetchを実行してリモートの変更を取得しておく
+$ git fetch
+```
+
+<br>
+
+差分を表示
+
+```shell
+$ git diff [ローカルブランチ] [リモート]/[リモートブランチ]
+
+# developブランチの例
+$ git diff develop origin/develop
+
+# 空白文字の違いを無視するには-wオプションを付与
+# これで何も表示されなければ、空白文字以外の違いはないことが確認できる
+$ git diff -w develop origin/develop
+```
+
+<br>
+
+`git push`する前に確認する癖をつけとくと良いかも
+
+```shell
+$ git fetch
+$ git diff main origin/main
 ```
