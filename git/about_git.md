@@ -235,6 +235,17 @@ N 番目にスタッシュしたファイルの変更差分を表示
 $ git stash show -p stash@{N}
 ```
 
+<br>
+
+特定のファイルのみスタッシュする
+
+```shell
+git stash push -- <filepash>
+
+# srcディレクトリのtest.pyだけをスタッシュしたい
+git stash push -- src/test.py
+```
+
 <br />
 <br />
 
@@ -478,6 +489,10 @@ $ git log
 
 # 変更ファイルリスト一覧も表示
 $ git log --name-status
+
+# リモートの履歴を表示
+$ git log --oneline origin/stg
+$ git log --oneline origin/stg -5 # リモートの履歴を5件表示
 ```
 
 <br><br>
