@@ -265,6 +265,12 @@ $ git branch
 
 ```shell
 $ git branch -a
+
+# リモートで削除されたはずのブランチがローカルに出てくる場合は
+# ローカルにリモート追跡ブランチが残ってしまっているため以下どちらかのコマンド実行
+$ git fetch --prune
+# or
+$ git remote prune origin
 ```
 
 **2. ブランチの追加**
