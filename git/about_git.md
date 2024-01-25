@@ -123,8 +123,6 @@ $ git clone https://github.com/${ユーザー名}/${リポジトリ名}.git
 <br />
 <br />
 
----
-
 ## **<font color="#00ff00">コミットメッセージについて</font>**
 
 [この記事](https://qiita.com/itosho/items/9565c6ad2ffc24c09364)を参考にしてる。
@@ -158,8 +156,6 @@ $ git clone https://github.com/${ユーザー名}/${リポジトリ名}.git
 
 <br />
 <br />
-
----
 
 ## **<font color="#00ff00">stash</font>**
 
@@ -258,8 +254,6 @@ git stash push -- src/test.py
 <br />
 <br />
 
----
-
 ## **<font color="#00ff00">ブランチ</font>**
 
 **1. ブランチの一覧を表示**
@@ -321,8 +315,6 @@ $ git branch -d {削除したいブランチ名}
 
 <br />
 <br />
-
----
 
 ## **<font color="#00ff00">コミットに関するコマンド</font>**
 
@@ -469,7 +461,15 @@ revert コマンドによって、過去のコミットをちょうど打ち消�
 
 [git revert の公式ドキュメント](https://git-scm.com/docs/git-revert)
 
-<br><br>
+<br>
+
+### 【空のコミットをするための小技】
+
+CI のテストだけやりたくて origin に push したいけど、特に変更することないみたいな時
+
+```shell
+$ git commit --allow-empty -m 'empty'
+```
 
 <br />
 <br />
