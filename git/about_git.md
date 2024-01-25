@@ -13,7 +13,9 @@
 <br />
 
 ## **<font color="#00ff00">Git インストール</font>**
+
 [HomeBrew](https://brew.sh/ja/)でインストール ([参照記事](https://qiita.com/suke_masa/items/4bed855628f7414293f8))
+
 ```shell
 $ brew install git
 ```
@@ -374,7 +376,7 @@ $ git reset --hard
 
 <br>
 
-#### 1 の方法 : push した k ジョミットを削除する方法
+#### 1 の方法 : push した コミットを削除する方法
 
 ---
 
