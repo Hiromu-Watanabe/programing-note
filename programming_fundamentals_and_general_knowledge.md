@@ -24,8 +24,6 @@ sumArray(arr: number[]): number
 <br>
 <br>
 
----
-
 ## **<font color="#00ff00">/common フォルダ</font>**
 
 - プロジェクト全体で共有されるコンポーネントや定数、型定義などが含まれることが多い
@@ -38,8 +36,6 @@ sumArray(arr: number[]): number
 
 <br>
 <br>
-
----
 
 ## **<font color="#00ff00">開発手法</font>**
 
@@ -93,8 +89,6 @@ sumArray(arr: number[]): number
 <br>
 <br>
 
----
-
 ## **<font color="#00ff00">DB</font>**
 
 <br>
@@ -131,3 +125,85 @@ sumArray(arr: number[]): number
 
 ※ データベースをこれらの正規形に従って設計することにより、データの冗長性が削減され、データの一貫性と効率性が向上する。<br>
 ただし、正規化が常に最良の選択とは限らず、パフォーマンスのために意図的に冗長性を残すという戦略もある。（登録のしやすさ、利用のしやすさや速度性能を考え、あえて冗長性を残す）
+
+<br>
+<br>
+
+## **<font color="#00ff00">PC セットアップ</font>**
+
+### 【GitHub 接続用 SSH キー作成】
+
+- [SSH キー作成時のオプションなど](https://qiita.com/c_tomioka/items/379a9288d44634ca1daa)
+
+- [新しい SSH キーを生成して ssh-agent に追加する](https://docs.github.com/ja/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+- [SSH キーのパスフレーズを使う](https://docs.github.com/ja/authentication/connecting-to-github-with-ssh/working-with-ssh-key-passphrases)
+- [GitHub アカウントへの新しい SSH キーの追加](https://docs.github.com/ja/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+
+<br>
+<br>
+
+### 【anyenv】
+
+[引用元記事](https://zenn.dev/hir0_728/scraps/8c5f622feb6c46)
+
+anyenv を使って複数の\*\*env (nodenv, rbenv, pyenv など) を一括管理できるようにする。
+homebrew 導入済みなので、セットアップは簡単。
+
+公式のリポジトリは[こちら](https://github.com/anyenv/anyenv?tab=readme-ov-file)
+
+```shell
+# anyenv のインストール実施
+$ brew install anyenv
+$ anyenv init --init
+
+$ vi ~/.zshrc
+
+# 以下内容を入力する
+# >> anyenv >>
+
+alias brew="env PATH=${PATH/\/Users\/${USER}\/\.anyenv\/envs\/pyenv\/shims:/} brew"
+eval "$(anyenv init -)"
+
+# << anyenv <<
+
+# wq:
+
+$ exec $SHELL -l
+$ anyenv -v
+
+# \*\*env 環境を一括でアップデートできるプラグイン
+
+$ mkdir -p $(anyenv root)/plugins
+$ git clone https://github.com/znz/anyenv-update.git $(anyenv root)/plugins/anyenv-update
+$ anyenv update
+
+$ git clone https://github.com/znz/anyenv-git.git $(anyenv root)/plugins/anyenv-git
+
+
+# インストール可能なenvの確認
+$ anyenv install -l
+
+# pyenvのインストールの例
+$ anyenv install pyenv
+$ exec $SHELL -l
+$ pyenv -v
+```
+
+<br><br>
+
+### 【nodeenv】
+
+- https://retval.jp/blog/m1-mac-nodenv/#nodenv
+
+### 【情報収集のサービス】
+
+Artifact, Perplexity, Lenny's Newsletter
+
+<br><br>
+
+## **<font color="#00ff00">開発に関する用語など</font>**
+
+### 【ポストモーテム】
+
+何がうまくいき、うまくいかなかったかを特定し、組織的プロセスを変更することにより学んだ教訓を取り入れ、プロジェクトの改善をサポーとするプロセス。
+障害があった際
