@@ -371,3 +371,92 @@ const { value: passwordConfirmation } = useField<string>('passwordConfirmation')
 ref の値のように script タグの上の方で定義したかったから、
 useForm より先に useField を書いてたけど正しく動作しなかった。
 時間ある時になんでそんな挙動したか vee-validate の処理の流れを追ってみよう
+
+<br><br>
+
+## **<font color="#00ff00">Deep Selectors</font>**
+
+親コンポーネントから子コンポーネントのスタイルを上書くようなことができる
+
+```js
+<style scoped>.a :deep(.b) {/* ... */}</style>
+```
+
+https://vuejs.org/api/sfc-css-features.html#deep-selectors
+https://zenn.dev/kibe/articles/afd8162d5f6fe9
+
+<br><br>
+
+## **<font color="#00ff00">Setup Context</font>**
+
+【公式記事】
+
+https://ja.vuejs.org/api/composition-api-setup.html#setup-context
+
+<br>
+
+【GitHub Copilot への質問】
+
+```
+この親コンポーネントに渡すイベント発火の書き方で setup(props, context)のcontextはなんですか？vueでいうところのどういった機能でどう言う書き方をしているか具体的かつ詳細に説明してください
+
+------------------------------------------------------------------------
+【GitHub Copilot】
+Vue 3のComposition APIのsetup関数では、第二引数としてcontextオブジェクトが提供されます。このcontextオブジェクトは、Vue 2のthisコンテキストに相当するもので、以下の3つのプロパティを持っています。
+
+attrs: 親から渡された属性を含むリアクティブなオブジェクトです。これは、親コンポーネントが子コンポーネントに渡す属性（propsで定義されていないもの）を参照するために使用します。
+
+slots: 親から渡されたスロットを含むオブジェクトです。これは、親コンポーネントが子コンポーネントに渡すスロットを参照するために使用します。
+
+emit: イベントを発火するための関数です。これは、子コンポーネントが親コンポーネントにイベントを通知するために使用します。
+
+このcontext.emit関数を使用すると、子コンポーネントは親コンポーネントに対してカスタムイベントを発火することができます。この関数は2つの引数を取ります。第一引数はイベント名（文字列）、第二引数はイベントのペイロード（任意のデータ）です。
+
+例えば、以下のように使用することができます。
+
+このコードは、my-eventという名前のイベントを発火し、そのペイロードとしてオブジェクトを送信します。親コンポーネントはこのイベントをリッスンし、ペイロードを受け取ることができます。
+```
+
+<br><br>
+
+## **<font color="#00ff00">Emit の型付け</font>**
+
+- オプションベースの宣言
+- 型ベースの宣言
+- Vue3.3 以降からの簡潔な構文
+
+などいくつかの記法がある（Vue が 3.3 以降のバージョンなら最新の書き方で良さそう）
+
+```vue
+<script setup lang="ts">
+// 実行時の宣言
+const emit = defineEmits(["change", "update"]);
+
+// オプションベースの宣言
+const emit = defineEmits({
+  change: (id: number) => {
+    // バリデーションの合格/不合格を示すための
+    // `true` または `false` を返す
+  },
+  update: (value: string) => {
+    // バリデーションの合格/不合格を示すための
+    // `true` または `false` を返す
+  },
+});
+
+// 型ベースの宣言
+const emit = defineEmits<{
+  (e: "change", id: number): void;
+  (e: "update", value: string): void;
+}>();
+
+// 3.3+: より簡潔な代替の構文
+const emit = defineEmits<{
+  change: [id: number];
+  update: [value: string];
+}>();
+</script>
+```
+
+以下記事から抜粋<br>
+https://ja.vuejs.org/guide/typescript/composition-api#typing-component-emits
