@@ -202,11 +202,30 @@ watchEffect(async () => {
 <br />
 <br />
 
----
-
 ## **<font color="#00ff00">computed()</font>**
 
 [公式 docs](https://ja.vuejs.org/api/reactivity-core.html#computed)
+
+レビューでいただいたコメント<br>
+src/components/group/group-activities.vue
+
+```ts
+const selectedIsShowCommentFilterItem = ref(
+  localStorage.getItem("selectedIsShowCommentFilterItem") ?? "showComment"
+);
+const isShowArticleCardComment = ref(
+  selectedIsShowCommentFilterItem.value === "showComment"
+);
+```
+
+(nits) handleArticleCardCommentOpen() 内で更新するのを、selectedIsShowCommentFilterItem の方にして、isShowArticleCardComment は computed にすると意味合いが分かりやすくなりそうです。
+
+const isShowArticleCardComment = computed(() =>
+selectedIsShowCommentFilterItem.value === 'showComment'
+);
+情報ソースとなる値は ref にして、それに付随して変更される値は computed なるように変数を整理できると、うまいこと状態を管理できると思いますー。
+
+<br><br>
 
 ゲッター関数を受け取り、ゲッターからの戻り値に対して読み取り専用のリアクティブな ref オブジェクトを返す
 
@@ -272,6 +291,8 @@ const plusOne = computed(() => count.value + 1, {
   },
 });
 ```
+
+<br><br>
 
 ## **<font color="#00ff00">vee-validate と yup を用いたバリデーション実装</font>**
 
@@ -460,3 +481,80 @@ const emit = defineEmits<{
 
 以下記事から抜粋<br>
 https://ja.vuejs.org/guide/typescript/composition-api#typing-component-emits
+
+<br><br>
+
+## **<font color="#00ff00">provide / inject</font>**
+
+階層を跨いで値の受け渡しができる機能。
+
+ここでは、provide と inject を使用して、3 階層上の親コンポーネントで定義された状態を孫コンポーネントで更新する具体的な例を示します。この例では、ポップアップの表示状態を親コンポーネントで管理し、孫コンポーネントからその状態を変更します。
+
+親コンポーネント (ParentComponent.vue)
+
+```
+vue
+Copy code
+<template>   <div>     <ChildComponent />   </div> </template> <script setup> import { ref } from 'vue'; import ChildComponent from './ChildComponent.vue'; const isOpen = ref(false); // ポップアップの表示状態と制御メソッドを提供 provide('popupState', isOpen); provide('togglePopup', () => isOpen.value = !isOpen.value); </script>
+```
+
+子コンポーネント (ChildComponent.vue)
+
+```
+vue
+Copy code
+<template>   <GrandchildComponent /> </template> <script setup> import GrandchildComponent from './GrandchildComponent.vue'; </script>
+```
+
+孫コンポーネント (GrandchildComponent.vue)
+
+```
+vue
+Copy code
+<template>   <div>     <button @click="togglePopup">Toggle Popup</button>     <div v-if="isOpen">This is a popup!</div>   </div> </template> <script setup> import { inject } from 'vue'; // 親コンポーネントから提供された状態とメソッドを注入 const isOpen = inject('popupState'); const togglePopup = inject('togglePopup'); </script>
+```
+
+この例では、ParentComponent.vue が isOpen というリアクティブなデータと togglePopup という関数を提供しています。GrandchildComponent.vue はこれらを inject して使用し、ボタンクリックでポップアップの表示状態を切り替えます。ChildComponent.vue は中間のコンポーネントで、特に provide や inject に関与していませんが、親から孫へのデータの流れを示すために存在します。
+
+この構成により、孫コンポーネントからポップアップの表示状態を制御でき、その状態の変更が親コンポーネントに伝播します。provide と inject を使用することで、親子間、またはより深い階層間でのデータの受け渡しが可能になり、Vue.js アプリケーションの状態管理が柔軟になります。
+
+<br><br>
+
+## **<font color="#00ff00">props の定義方法とデフォルト値</font>**
+
+```ts
+<script setup lang="ts">
+import { ref, watch } from 'vue';
+import { defineEmits, defineProps } from 'vue';
+
+interface Props {
+  placeholder?: string;
+  disableSearchIcon?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  placeholder: '検索…',
+  disableSearchIcon: true
+});
+```
+
+<br><br>
+
+## **<font color="#00ff00">Vue Test Unit</font>**
+
+### shallowMount と mount の違い
+
+- どちらもマウントを行うための関数
+- 主な違いは子コンポーネントの扱い方
+
+### 【mount】
+
+テスト対象のコンポーネントとそのすべての子コンポーネントをフルレンダリングする。<br>
+つまり、子コンポーネントもその内部のすべての要素とともにレンダリングされる
+
+### 【shallowmount】
+
+一方、shallowMount は、テスト対象のコンポーネントのみをフルレンダリングし、子コンポーネントはスタブ（ダミーの置き換え）としてレンダリングする。
+これにより、テスト対象のコンポーネントのみに焦点を当て、その外部依存関係を排除することができる。
+
+したがって、shallowMount は、テスト対象のコンポーネントが他のコンポーネントとどのように相互作用するかではなく、その内部のロジックをテストするのに適しています。
