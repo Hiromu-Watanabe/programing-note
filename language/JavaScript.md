@@ -103,3 +103,26 @@ console.log(array1.sort(a, b) =>
   dayjs(b?.orderCreatedDatetime ?? 0).valueOf() -
   dayjs(a?.orderCreatedDatetime ?? 0).valueOf())
 ```
+
+## **<font color="#00ff00">structuredClone()</font>**
+
+オブジェクトのディープコピーができる便利な組み込み関数。
+プレーンなオブジェクト（ただのオブジェクトや配列）だけでなく、Set や Map といった JavaScript に特有のオブジェクトもコピーができる。
+
+```js
+const s = new Set([1, 2, 3]);
+const copyS1 = structuredClone(s);
+const copyS2 = structuredClone(s);
+
+copyS1 === copyS1; // => false
+```
+
+`JSON.stringify` → `JSON.parse`でも同様にディープコピーができるが、JSON の範囲外のオブジェクトはコピーできない。（Set や Map など）
+
+```js
+const obj = { key1: 1, key2: 2 };
+const copyObj = JSON.stringify(JSON.pase(obj));
+
+console.log(obj === copyObj);
+// => false
+```
