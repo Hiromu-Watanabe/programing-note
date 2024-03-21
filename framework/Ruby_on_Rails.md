@@ -42,3 +42,8 @@ present メソッドは、オブジェクトが存在し、かつ空でない場
 
 - nil, false, 空の文字列（""）、空の配列（[]）、空のハッシュ（{}） に対しては false を返す
 - 上記以外の値に対しては true を返す
+
+<br>
+
+ActiveRecord のメソッド一覧
+<img src="../images/ActiveRecord_method.png" width="100%" alt="ActiveRecordのメソッド一覧">
