@@ -546,3 +546,64 @@ $ git diff -w develop origin/develop
 $ git fetch
 $ git diff main origin/main
 ```
+
+<br><br>
+
+## **<font color="#00ff00">development ブランチから分岐したブランチで development ブランチにマージする前に最新の development の変更点を取り込む方法</font>**
+
+`development`ブランチから分岐したブランチに`development`の最新の変更点を取り込む方法には、いくつかの主要な手法があります。これらは Git の機能を活用したもので、それぞれに利点と適用シナリオがあります。
+
+1. **Merge**: `development`ブランチの変更を現在の作業ブランチにマージします。これにより、`development`の変更が現在のブランチに統合されます。
+
+   ```bash
+   git checkout my-feature-branch
+   git merge development
+   ```
+
+この方法は、`development`からの変更を直接統合し、マージコミットを作成します。
+
+2. **Rebase**: `development`ブランチの最新の変更点を現在のブランチのベースとして再配置します。
+
+   ```bash
+   git checkout my-feature-branch
+   git rebase development
+   ```
+
+   Rebase は、作業ブランチのコミットを`development`の最後のコミットの上に「移動」させます。これにより、履歴がよりクリーンになりますが、公開されているブランチでの使用には注意が必要です。
+
+3. **Interactive Rebase** (`git rebase -i`): Rebase をより詳細に制御し、特定のコミットを編集、削除、または再順序できます。
+
+   ```bash
+   git checkout my-feature-branch
+   git rebase -i development
+   ```
+
+   これは、ブランチのコミット履歴を整理したい場合に特に便利です。
+
+4. **Cherry-pick**: 特定のコミットだけを`development`ブランチから現在のブランチに適用します。
+
+   ```bash
+   git checkout my-feature-branch
+   git cherry-pick <commit-hash>
+   ```
+
+   必要な変更だけを選択的に取り込みたい場合に役立ちます。
+
+5. **Pull with Rebase**: `git pull`コマンドを使用して`development`の変更を取り込みつつ、リベースを行います。
+
+   ```bash
+   git checkout my-feature-branch
+   git pull --rebase origin development
+   ```
+
+   これは、現在のブランチを最新の`development`ブランチの変更に基づいて更新したい場合に役立ちます。
+
+6. **Fetch and Merge**: 直接マージする代わりに、まず`development`ブランチの変更をローカルにフェッチしてからマージします。
+   ```bash
+   git fetch origin
+   git checkout my-feature-branch
+   git merge origin/development
+   ```
+   これにより、ローカルの`development`ブランチを操作せずに、リモートの変更を現在のブランチに統合できます。
+
+各手法は、チームのワークフロー、個々のプレファレンス、および特定の状況によって異なる場合があります。また、共有されたブランチでの履歴の書き換え（例えば、`rebase`や`cherry-pick`を使用する場合）は、他の開発者に影響を与える可能性があるため、注意が必要です。
