@@ -113,6 +113,9 @@ console.log(array1.sort(a, b) =>
 
 - https://developer.mozilla.org/ja/docs/Web/API/structuredClone
 - https://zenn.dev/uhyo/articles/what-is-structuredclone
+- https://qiita.com/ryuseiyarou/items/180ce5962e78ba1c164f
+- https://zenn.dev/kata_n/articles/87e7b3d644c6cc
+- https://qiita.com/yamatai12/items/144fc63e9c41f4ab305c
 
 ```js
 const s = new Set([1, 2, 3]);
@@ -131,3 +134,5 @@ const copyObj = JSON.stringify(JSON.pase(obj));
 console.log(obj === copyObj);
 // => false
 ```
+
+他にも lodash というライブラリの[cloneDeep](https://lodash.com/docs#cloneDeep)というメソッドもあったりする
