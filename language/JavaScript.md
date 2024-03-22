@@ -109,6 +109,11 @@ console.log(array1.sort(a, b) =>
 オブジェクトのディープコピーができる便利な組み込み関数。
 プレーンなオブジェクト（ただのオブジェクトや配列）だけでなく、Set や Map といった JavaScript に特有のオブジェクトもコピーができる。
 
+【参考記事】
+
+- https://developer.mozilla.org/ja/docs/Web/API/structuredClone
+- https://zenn.dev/uhyo/articles/what-is-structuredclone
+
 ```js
 const s = new Set([1, 2, 3]);
 const copyS1 = structuredClone(s);
